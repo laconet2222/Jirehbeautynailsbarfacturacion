@@ -21,7 +21,7 @@
       text-align: center;
     }
     header img {
-      width: 100px;
+      width: 120px;
     }
     h1 {
       margin: 10px 0 0;
@@ -66,7 +66,7 @@
 </head>
 <body>
   <header>
-    <img src="logo_jireh.png" alt="Logo">
+    <img src="LOGO%20SANTA%20SALON%20(3).png" alt="Logo">
     <h1>Jireh Beauty Salon Nails Bar</h1>
     <p>Dios proveerá</p>
   </header>
@@ -134,23 +134,32 @@
       orden++
       localStorage.setItem('ultimaOrden', orden)
 
-      doc.setFontSize(16)
+      doc.setFontSize(18)
+      doc.setTextColor(218, 165, 32)
       doc.text("Jireh Beauty Salon Nails Bar", 20, 20)
       doc.setFontSize(12)
+      doc.setTextColor(0)
       doc.text("Nombre del Cliente: " + cliente, 20, 30)
       doc.text("Número de Orden: #" + orden, 20, 40)
 
-      let y = 50
+      let y = 55
+      doc.setFontSize(12)
       productos.forEach(p => {
         doc.text(`- ${p.producto}: DOP ${p.precio.toFixed(2)}`, 20, y)
         y += 10
       })
 
+      doc.setFontSize(14)
+      doc.setTextColor(0)
       doc.text("TOTAL: DOP " + total.toFixed(2), 20, y + 10)
-      doc.text("Gracias por preferirnos. ¡Dios te bendiga!", 20, y + 30)
+
+      doc.setFontSize(12)
+      doc.setTextColor(100)
+      doc.text("Gracias por confiar en nosotros. Esperamos volver a verte pronto.", 20, y + 30)
+      doc.text("Dios te bendiga 🙏", 20, y + 40)
+
       doc.save(`Factura_${orden}.pdf`)
 
-      // Guardar historial diario
       let hoy = new Date().toLocaleDateString()
       let historial = JSON.parse(localStorage.getItem('historial') || '{}')
       if (!historial[hoy]) historial[hoy] = []
