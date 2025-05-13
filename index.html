@@ -111,3 +111,76 @@
     function addItem() {
         const clientName = document.getElementById('clientName').value;
         const service = document.getElementById('service').value;
+        const price = parseFloat(document.getElementById('price').value);
+        
+        if (service && price && clientName) {
+            // Crear un número de orden aleatorio
+            orderNumber++;
+
+            // Agregar item a la lista de productos
+            items.push({ service, price });
+
+            // Actualizar la tabla de productos
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${service}</td>
+                <td>${price} DOP</td>
+            `;
+            document.getElementById('itemsTable').querySelector('tbody').appendChild(row);
+
+            // Actualizar el total
+            totalAmount += price;
+            document.getElementById('totalAmount').textContent = totalAmount.toFixed(2);
+
+            // Limpiar los campos de entrada
+            document.getElementById('service').value = '';
+            document.getElementById('price').value = '';
+        }
+    }
+
+    function generatePDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const clientName = document.getElementById('clientName').value;
+
+        let y = 40;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(255, 215, 0); // Dorado
+
+        // Título
+        doc.setFontSize(22);
+        doc.text("Factura Jireh Beauty Salon Nails Bar", 105, y, null, null, 'center');
+        y += 15;
+
+        // Datos del cliente
+        doc.setFontSize(12);
+        doc.text(`Nombre del Cliente: ${clientName}`, 20, y);
+        y += 10;
+        doc.text(`Número de Orden: ${orderNumber}`, 20, y);
+        y += 15;
+
+        // Detalles de los productos o servicios
+        doc.text('Productos/Servicios:', 20, y);
+        y += 10;
+        items.forEach(item => {
+            doc.text(`${item.service} - DOP ${item.price}`, 20, y);
+            y += 10;
+        });
+
+        // Total
+        doc.text(`Total: DOP ${totalAmount.toFixed(2)}`, 20, y);
+        
+        // Guardar el PDF
+        const pdfName = `factura_${clientName}_${orderNumber}.pdf`;
+        doc.save(pdfName);
+
+        // Generar enlace de WhatsApp
+        const whatsappMessage = `Factura de Jireh Beauty Salon Nails Bar\n\nCliente: ${clientName}\nOrden: ${orderNumber}\nTotal: DOP ${totalAmount.toFixed(2)}\n\nPuedes ver y descargar tu factura aquí: ${window.location.href}`;
+        const whatsappLink = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
+        document.getElementById('whatsappLink').innerHTML = `<a href="${whatsappLink}" target="_blank">Enviar factura por WhatsApp</a>`;
+    }
+</script>
+
+</body>
+</html>
