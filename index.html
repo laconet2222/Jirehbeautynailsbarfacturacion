@@ -20,9 +20,6 @@
       padding: 20px;
       text-align: center;
     }
-    header img {
-      width: 120px;
-    }
     h1 {
       margin: 10px 0 0;
     }
@@ -66,7 +63,6 @@
 </head>
 <body>
   <header>
-    <img src="LOGO%20SANTA%20SALON%20(3).png" alt="Logo">
     <h1>Jireh Beauty Salon Nails Bar</h1>
     <p>Dios proveerá</p>
   </header>
@@ -129,7 +125,7 @@
     function generarFactura() {
       const cliente = document.getElementById("cliente").value
       const { jsPDF } = window.jspdf
-      const doc = new jsPDF()
+      const doc = new jsPDF("p", "mm", "a4")
 
       orden++
       localStorage.setItem('ultimaOrden', orden)
@@ -137,6 +133,7 @@
       doc.setFontSize(18)
       doc.setTextColor(218, 165, 32)
       doc.text("Jireh Beauty Salon Nails Bar", 20, 20)
+
       doc.setFontSize(12)
       doc.setTextColor(0)
       doc.text("Nombre del Cliente: " + cliente, 20, 30)
@@ -144,19 +141,21 @@
 
       let y = 55
       doc.setFontSize(12)
+      doc.setTextColor(0)
+      doc.text("Detalle de Servicios:", 20, y)
+      y += 10
+
       productos.forEach(p => {
-        doc.text(`- ${p.producto}: DOP ${p.precio.toFixed(2)}`, 20, y)
-        y += 10
+        doc.text(`• ${p.producto}: DOP ${p.precio.toFixed(2)}`, 25, y)
+        y += 8
       })
 
       doc.setFontSize(14)
-      doc.setTextColor(0)
       doc.text("TOTAL: DOP " + total.toFixed(2), 20, y + 10)
 
       doc.setFontSize(12)
       doc.setTextColor(100)
-      doc.text("Gracias por confiar en nosotros. Esperamos volver a verte pronto.", 20, y + 30)
-      doc.text("Dios te bendiga 🙏", 20, y + 40)
+      doc.text("\nGracias por confiar en nosotros. \nTe esperamos pronto con una sonrisa.\nDios te bendiga 🙏", 20, y + 30)
 
       doc.save(`Factura_${orden}.pdf`)
 
