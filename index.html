@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -56,28 +55,33 @@
             margin-top: 20px;
             text-align: center;
         }
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Jireh Beauty Salon Nails Bar</h1>
+    
     <div class="form-group">
-        <label for="clientNumber">Número de Cliente:</label>
-        <input type="text" id="clientNumber" placeholder="Ingrese el número de cliente">
+        <label for="clientName">Nombre del Cliente:</label>
+        <input type="text" id="clientName" placeholder="Ingrese el nombre del cliente">
     </div>
-    <div class="form-group">
-        <label for="orderNumber">Número de Orden:</label>
-        <input type="text" id="orderNumber" placeholder="Ingrese el número de orden">
-    </div>
+    
     <div class="form-group">
         <label for="service">Producto/Servicio:</label>
         <input type="text" id="service" placeholder="Ingrese el nombre del producto o servicio">
     </div>
     <div class="form-group">
-        <label for="price">Precio:</label>
+        <label for="price">Precio (DOP):</label>
         <input type="number" id="price" placeholder="Ingrese el precio en DOP">
     </div>
+    
     <button onclick="addItem()">Agregar Producto/Servicio</button>
     
     <table class="table" id="itemsTable">
@@ -89,6 +93,10 @@
         </thead>
         <tbody></tbody>
     </table>
+
+    <div class="total">
+        <p>Total: DOP <span id="totalAmount">0</span></p>
+    </div>
     
     <button onclick="generatePDF()">Generar Factura</button>
 
@@ -96,76 +104,10 @@
 </div>
 
 <script>
-    let items = JSON.parse(localStorage.getItem('transactions')) || [];
+    let items = [];
+    let totalAmount = 0;
+    let orderNumber = 1; // Iniciar el número de orden
 
     function addItem() {
+        const clientName = document.getElementById('clientName').value;
         const service = document.getElementById('service').value;
-        const price = document.getElementById('price').value;
-        const clientNumber = document.getElementById('clientNumber').value;
-        const orderNumber = document.getElementById('orderNumber').value;
-
-        if (service && price) {
-            items.push({ service, price, clientNumber, orderNumber });
-
-            // Actualizar la tabla
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${service}</td>
-                <td>${price}</td>
-            `;
-            document.getElementById('itemsTable').querySelector('tbody').appendChild(row);
-
-            // Guardar la transacción en localStorage
-            localStorage.setItem('transactions', JSON.stringify(items));
-        }
-    }
-
-    function generatePDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        const clientNumber = document.getElementById('clientNumber').value;
-        const orderNumber = document.getElementById('orderNumber').value;
-        let y = 40;
-
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(255, 215, 0); // Dorado
-
-        // Título
-        doc.setFontSize(22);
-        doc.text("Factura Jireh Beauty Salon Nails Bar", 105, y, null, null, 'center');
-        y += 15;
-
-        // Datos del cliente y orden
-        doc.setFontSize(12);
-        doc.text(`Número de Cliente: ${clientNumber}`, 20, y);
-        y += 10;
-        doc.text(`Número de Orden: ${orderNumber}`, 20, y);
-        y += 15;
-
-        // Detalles de los productos o servicios
-        doc.text('Productos/Servicios:', 20, y);
-        y += 10;
-        items.forEach(item => {
-            doc.text(`${item.service} - DOP ${item.price}`, 20, y);
-            y += 10;
-        });
-
-        // Guardar el PDF
-        const pdfName = `factura_${clientNumber}_${orderNumber}.pdf`;
-        doc.save(pdfName);
-
-        // Generar enlace de WhatsApp
-        const whatsappMessage = `Factura de Jireh Beauty Salon Nails Bar
-
-Cliente: ${clientNumber}
-Orden: ${orderNumber}
-Total: DOP ${items.reduce((total, item) => total + parseFloat(item.price), 0)}
-
-Puedes ver y descargar tu factura aquí: ${window.location.href}`;
-        const whatsappLink = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
-        document.getElementById('whatsappLink').innerHTML = `<a href="${whatsappLink}" target="_blank">Enviar factura por WhatsApp</a>`;
-    }
-</script>
-
-</body>
-</html>
