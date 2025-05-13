@@ -1,196 +1,196 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Facturación</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: 20px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #FFD700; /* Dorado */
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            font-weight: bold;
-        }
-        input, button {
-            padding: 10px;
-            width: 100%;
-            margin-top: 5px;
-            font-size: 16px;
-        }
-        .table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-        .table th, .table td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        .table th {
-            background-color: #FFD700;
-            color: white;
-        }
-        .whatsapp-link {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .total {
-            font-size: 18px;
-            font-weight: bold;
-            text-align: right;
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jireh Beauty - Facturación</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fefefe;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    }
+    h1 {
+      text-align: center;
+      color: #9C27B0;
+      margin-bottom: 10px;
+    }
+    p.subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #444;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+    button {
+      background-color: #9C27B0;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #7B1FA2;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background-color: #f3e5f5;
+      color: #6a1b9a;
+    }
+    .total {
+      text-align: right;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .whatsapp-link {
+      text-align: center;
+      margin-top: 25px;
+    }
+  </style>
 </head>
 <body>
-
 <div class="container">
-    <h1>Jireh Beauty Salon Nails Bar</h1>
-    
-    <div class="form-group">
-        <label for="clientName">Nombre del Cliente:</label>
-        <input type="text" id="clientName" placeholder="Ingrese el nombre del cliente">
-    </div>
+  <h1>Jireh Beauty Salon Nails Bar</h1>
+  <p class="subtitle">Sistema de Facturación Profesional</p>
 
-    <div class="form-group">
-        <label for="clientPhone">Número de Teléfono:</label>
-        <input type="text" id="clientPhone" placeholder="Ingrese el número de teléfono del cliente">
-    </div>
-    
-    <div class="form-group">
-        <label for="service">Producto/Servicio:</label>
-        <input type="text" id="service" placeholder="Ingrese el nombre del producto o servicio">
-    </div>
-    <div class="form-group">
-        <label for="price">Precio (DOP):</label>
-        <input type="number" id="price" placeholder="Ingrese el precio en DOP">
-    </div>
-    
-    <button onclick="addItem()">Agregar Producto/Servicio</button>
-    
-    <table class="table" id="itemsTable">
-        <thead>
-            <tr>
-                <th>Producto/Servicio</th>
-                <th>Precio (DOP)</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+  <label for="clientName">Nombre del Cliente:</label>
+  <input type="text" id="clientName" placeholder="Ej. Ana Martínez" />
 
-    <div class="total">
-        <p>Total: DOP <span id="totalAmount">0</span></p>
-    </div>
-    
-    <button onclick="generatePDF()">Generar Factura</button>
+  <label for="clientPhone">Número de Teléfono:</label>
+  <input type="text" id="clientPhone" placeholder="Ej. 8091234567" />
 
-    <div class="whatsapp-link" id="whatsappLink"></div>
+  <label for="service">Producto o Servicio:</label>
+  <input type="text" id="service" placeholder="Ej. Corte de cabello" />
+
+  <label for="price">Precio (DOP):</label>
+  <input type="number" id="price" placeholder="Ej. 500" />
+
+  <button onclick="addItem()">Agregar Producto/Servicio</button>
+
+  <table id="itemsTable">
+    <thead>
+      <tr>
+        <th>Producto/Servicio</th>
+        <th>Precio (DOP)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="total">
+    Total: DOP <span id="totalAmount">0.00</span>
+  </div>
+
+  <button onclick="generatePDF()">Generar Factura PDF</button>
+  <div class="whatsapp-link" id="whatsappLink"></div>
 </div>
 
 <script>
-    let items = [];
-    let totalAmount = 0;
-    let orderNumber = 1; // Iniciar el número de orden
+  let items = [];
+  let totalAmount = 0;
+  let orderNumber = Math.floor(Math.random() * 100000);
 
-    function addItem() {
-        const clientName = document.getElementById('clientName').value;
-        const clientPhone = document.getElementById('clientPhone').value;
-        const service = document.getElementById('service').value;
-        const price = parseFloat(document.getElementById('price').value);
-        
-        if (service && price && clientName && clientPhone) {
-            // Crear un número de orden aleatorio
-            orderNumber++;
+  function addItem() {
+    const service = document.getElementById("service").value;
+    const price = parseFloat(document.getElementById("price").value);
 
-            // Agregar item a la lista de productos
-            items.push({ service, price });
+    if (!service || !price) return alert("Completa los campos de producto y precio");
 
-            // Actualizar la tabla de productos
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${service}</td>
-                <td>${price} DOP</td>
-            `;
-            document.getElementById('itemsTable').querySelector('tbody').appendChild(row);
+    items.push({ service, price });
+    totalAmount += price;
 
-            // Actualizar el total
-            totalAmount += price;
-            document.getElementById('totalAmount').textContent = totalAmount.toFixed(2);
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${service}</td><td>${price.toFixed(2)} DOP</td>`;
+    document.querySelector("#itemsTable tbody").appendChild(row);
 
-            // Limpiar los campos de entrada
-            document.getElementById('service').value = '';
-            document.getElementById('price').value = '';
-        }
-    }
+    document.getElementById("totalAmount").textContent = totalAmount.toFixed(2);
 
-    function generatePDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        const clientName = document.getElementById('clientName').value;
-        const clientPhone = document.getElementById('clientPhone').value;
+    document.getElementById("service").value = "";
+    document.getElementById("price").value = "";
+  }
 
-        let y = 40;
+  function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-        // Configuración del PDF
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(255, 215, 0); // Dorado
-        doc.setFontSize(22);
-        doc.text("Factura Jireh Beauty Salon Nails Bar", 105, y, null, null, 'center');
-        y += 20;
+    const clientName = document.getElementById("clientName").value;
+    const clientPhone = document.getElementById("clientPhone").value;
 
-        // Datos del cliente
-        doc.setFontSize(12);
-        doc.setTextColor(0, 0, 0); // Negro
-        doc.text(`Cliente: ${clientName}`, 20, y);
-        y += 10;
-        doc.text(`Teléfono: ${clientPhone}`, 20, y);
-        y += 10;
-        doc.text(`Número de Orden: ${orderNumber}`, 20, y);
-        y += 20;
+    let y = 20;
 
-        // Detalles de los productos o servicios
-        doc.text('Productos/Servicios:', 20, y);
-        y += 10;
-        items.forEach(item => {
-            doc.text(`${item.service} - DOP ${item.price}`, 20, y);
-            y += 10;
-        });
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.setTextColor(156, 39, 176);
+    doc.text("Jireh Beauty Salon Nails Bar", 105, y, null, null, 'center');
 
-        // Total
-        doc.text(`Total: DOP ${totalAmount.toFixed(2)}`, 20, y);
-        y += 20;
+    y += 10;
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Factura No: ${orderNumber}`, 14, y);
+    y += 7;
+    doc.text(`Cliente: ${clientName}`, 14, y);
+    y += 7;
+    doc.text(`Teléfono: ${clientPhone}`, 14, y);
+    y += 10;
 
-        // Guardar el PDF
-        const pdfName = `factura_${clientName}_${orderNumber}.pdf`;
-        doc.save(pdfName);
+    doc.setFont("helvetica", "bold");
+    doc.setFillColor(243, 229, 245);
+    doc.rect(14, y, 180, 8, 'F');
+    doc.text("Producto/Servicio", 16, y + 6);
+    doc.text("Precio (DOP)", 160, y + 6);
 
-        // Generar enlace de WhatsApp
-        const whatsappMessage = `Factura de Jireh Beauty Salon Nails Bar\n\nCliente: ${clientName}\nTeléfono: ${clientPhone}\nOrden: ${orderNumber}\nTotal: DOP ${totalAmount.toFixed(2)}\n\nPuedes ver y descargar tu factura aquí: ${window.location.href}`;
-        const whatsappLink = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
-        document.getElementById('whatsappLink').innerHTML = `<a href="${whatsappLink}" target="_blank">Enviar factura por WhatsApp</a>`;
-    }
+    y += 12;
+    doc.setFont("helvetica", "normal");
+    items.forEach(item => {
+      doc.text(item.service, 16, y);
+      doc.text(item.price.toFixed(2), 160, y);
+      y += 7;
+    });
+
+    y += 10;
+    doc.setFont("helvetica", "bold");
+    doc.text(`Total a Pagar: DOP ${totalAmount.toFixed(2)}`, 14, y);
+
+    doc.save(`Factura_${clientName}_${orderNumber}.pdf`);
+
+    // WhatsApp Message
+    const whatsappMessage = `Hola ${clientName}, esta es tu factura de Jireh Beauty Salon Nails Bar. Total: DOP ${totalAmount.toFixed(2)}. ¡Gracias por tu visita!`;
+    const whatsappLink = `https://wa.me/1${clientPhone}?text=${encodeURIComponent(whatsappMessage)}`;
+    document.getElementById("whatsappLink").innerHTML = `<a href="${whatsappLink}" target="_blank">Enviar factura por WhatsApp</a>`;
+  }
 </script>
-
 </body>
 </html>
