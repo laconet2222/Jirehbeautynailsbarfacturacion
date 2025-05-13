@@ -72,6 +72,11 @@
         <label for="clientName">Nombre del Cliente:</label>
         <input type="text" id="clientName" placeholder="Ingrese el nombre del cliente">
     </div>
+
+    <div class="form-group">
+        <label for="clientPhone">Número de Teléfono:</label>
+        <input type="text" id="clientPhone" placeholder="Ingrese el número de teléfono del cliente">
+    </div>
     
     <div class="form-group">
         <label for="service">Producto/Servicio:</label>
@@ -110,10 +115,11 @@
 
     function addItem() {
         const clientName = document.getElementById('clientName').value;
+        const clientPhone = document.getElementById('clientPhone').value;
         const service = document.getElementById('service').value;
         const price = parseFloat(document.getElementById('price').value);
         
-        if (service && price && clientName) {
+        if (service && price && clientName && clientPhone) {
             // Crear un número de orden aleatorio
             orderNumber++;
 
@@ -142,23 +148,26 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         const clientName = document.getElementById('clientName').value;
+        const clientPhone = document.getElementById('clientPhone').value;
 
         let y = 40;
 
+        // Configuración del PDF
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(255, 215, 0); // Dorado
-
-        // Título
         doc.setFontSize(22);
         doc.text("Factura Jireh Beauty Salon Nails Bar", 105, y, null, null, 'center');
-        y += 15;
+        y += 20;
 
         // Datos del cliente
         doc.setFontSize(12);
-        doc.text(`Nombre del Cliente: ${clientName}`, 20, y);
+        doc.setTextColor(0, 0, 0); // Negro
+        doc.text(`Cliente: ${clientName}`, 20, y);
+        y += 10;
+        doc.text(`Teléfono: ${clientPhone}`, 20, y);
         y += 10;
         doc.text(`Número de Orden: ${orderNumber}`, 20, y);
-        y += 15;
+        y += 20;
 
         // Detalles de los productos o servicios
         doc.text('Productos/Servicios:', 20, y);
@@ -170,13 +179,14 @@
 
         // Total
         doc.text(`Total: DOP ${totalAmount.toFixed(2)}`, 20, y);
-        
+        y += 20;
+
         // Guardar el PDF
         const pdfName = `factura_${clientName}_${orderNumber}.pdf`;
         doc.save(pdfName);
 
         // Generar enlace de WhatsApp
-        const whatsappMessage = `Factura de Jireh Beauty Salon Nails Bar\n\nCliente: ${clientName}\nOrden: ${orderNumber}\nTotal: DOP ${totalAmount.toFixed(2)}\n\nPuedes ver y descargar tu factura aquí: ${window.location.href}`;
+        const whatsappMessage = `Factura de Jireh Beauty Salon Nails Bar\n\nCliente: ${clientName}\nTeléfono: ${clientPhone}\nOrden: ${orderNumber}\nTotal: DOP ${totalAmount.toFixed(2)}\n\nPuedes ver y descargar tu factura aquí: ${window.location.href}`;
         const whatsappLink = `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
         document.getElementById('whatsappLink').innerHTML = `<a href="${whatsappLink}" target="_blank">Enviar factura por WhatsApp</a>`;
     }
